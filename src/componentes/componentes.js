@@ -11,7 +11,7 @@ const htmlTodo = `
  <li class="${(todo.completado) ? 'completed' : '' }" data-id="${todo.id}">
  <div class="view">
      <input class="toggle" type="checkbox" ${(todo.completado) ? 'checked' : '' }>
-     <label>${todo.descripcion}</label>
+     <label>${todo.descripcion }</label>
      <button class="destroy"></button>
  </div>
  <input class="edit" value="Create a TodoMVC template">
@@ -28,11 +28,13 @@ return div.firstElementChild;
 }
 
 //Eventos
-const inputText            = document.querySelector('.new-todo');
-const divTodoList          = document.querySelector('.todo-list');
-const btnBorrarCompletados = document.querySelector('.clear-completed');
+const inputText               = document.querySelector('.new-todo');
+const divTodoList             = document.querySelector('.todo-list');
+const btnBorrarCompletados    = document.querySelector('.clear-completed');
+const ulFiltros               = document.querySelector('.filters');
+const anchorFiltros           = document.querySelectorAll('.filtro');
 
-//Captura las pulsaciones despues de presionar Enter y que el texto ingresado no sea vacio
+//Captura las pulsaciones despues de presionar Enter y valida que el texto ingresado no sea vacio
 inputText.addEventListener('keyup',  (event) => {
 
         if(event.keyCode === 13 && inputText.value.length > 0){
@@ -81,3 +83,40 @@ btnBorrarCompletados.addEventListener('click', (event) =>{
     }            
 
     });
+
+    ulFiltros.addEventListener('click', (event) => {
+    const filtro = event.target.text;
+    //Si el filtro no existe, por ejemplo si es undefined, solo hace un return
+    if( !filtro ){ return };
+
+    anchorFiltros.forEach( elem => elem.classList.remove('selected') );
+    console.log(anchorFiltros);
+    event.target.classList.add('selected');
+
+    for( const element of divTodoList.children){
+            element.classList.remove('hidden');
+            const completado = element.classList.contains('completed');
+            
+            switch( filtro ){
+                case 'Pendientes':
+                    if(completado){
+                        element.classList.add('hidden');
+                    }
+                    break;
+                case 'Completados':
+                    if(!completado){
+                        element.classList.add('hidden');
+                    }
+                    break;
+            }
+
+       }
+
+
+});
+
+
+
+
+
+

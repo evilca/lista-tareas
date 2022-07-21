@@ -39,6 +39,7 @@ export class TodoList {
         this.guardarLocalStorage();
     }
 
+
     guardarLocalStorage(){
         localStorage.setItem('todo', JSON.stringify(this.todos));
     }
